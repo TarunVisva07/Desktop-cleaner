@@ -70,7 +70,7 @@ class DesktopInterface:
         print("The directory {} has been deleted successfully ...".format(_dir))
 
 
-interface = DesktopInterface("C://users//tarun//desktop")
+interface = DesktopInterface(input("Enter the path to your desktop"))
 interface.get_files_by_extension()
 while True:
     interface.classify(input("Enter extension"),input("Enter directory"))
