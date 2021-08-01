@@ -10,8 +10,11 @@ class DesktopInterface:
 
     def __init__(self, desktop):
         self.desktop = desktop
+        self.initialize_files()
+
+    def initialize_files(self):
         self.files = list()
-        for file in os.listdir(desktop):
+        for file in os.listdir(self.desktop):
             if "." in file:
                 self.files.append(file)
 
@@ -22,6 +25,7 @@ class DesktopInterface:
 
     def show_directories(self):
         i = 1
+        print("DIRECTORIES :\n")
         for file in os.listdir(self.desktop):
             if "." not in file:
                 print("{}. {}".format(i, file))
@@ -42,6 +46,7 @@ class DesktopInterface:
                     di[x.upper()].append(file)
                     print("{}. {}".format(i, file))
                     i += 1
+            print()
         return di
 
     def classify(self, ext, _dir):
@@ -64,14 +69,40 @@ class DesktopInterface:
                     print("Unable to move {} due to {} error".format(file, e))
                     pass
                 time.sleep(1.5)
+        self.initialize_files()
 
     def delete_dir(self, _dir):
         shutil.rmtree(os.path.join(self.desktop, _dir))
         print("The directory {} has been deleted successfully ...".format(_dir))
 
-
+def displayMenu():
+    menu = '''
+    1.Show files by extension
+    2.Show directories
+    3.Organize files
+    4.Delete a directory
+    '''
+    print(menu)
+    return int(input("Enter your choice (0 to exit application)"))
+    
 interface = DesktopInterface(input("Enter the path to your desktop"))
-interface.get_files_by_extension()
+
 while True:
-    interface.classify(input("Enter extension"),input("Enter directory"))
+    ch = displayMenu()
+    if ch == 0:
+        break
+    if ch == 1:
+        interface.get_files_by_extension()
+    elif ch == 2:
+        interface.show_directories()
+    elif ch == 3:
+        interface.classify(input("Enter extension : "),input("Enter directory name : "))
+    elif ch == 4:
+        interface.delete_dir("Enter directory name to delete : ")
+    else:
+        print("Invalid choice ")
+
+print("\nThank you for using this application :)")
+
+
     
