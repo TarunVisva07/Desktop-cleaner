@@ -3,7 +3,6 @@ import re
 import shutil
 import time
 
-print("Press Ctrl + C to stop any program .. :) ../..")
 
 
 class DesktopInterface:
