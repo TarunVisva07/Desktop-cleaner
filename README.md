@@ -21,4 +21,6 @@ in the directory
 **(v)classify(ext,dir)** - Gets extension and directory as input and moves the files of that particular extension to the directory specified.
 If the directory does not exist, the method creates a new directory.
 
-**(vi)delete_dir(dir)** - Just an implementation of **shutil.rmtree** function which deletes a directory 
+**(vi)auto_classify** - Uses **File_formats.bin** file to automatically classify all files according to their extensions to their respective folders
+
+**(vii)delete_dir(dir)** - Just an implementation of **shutil.rmtree** function which deletes a directory 
