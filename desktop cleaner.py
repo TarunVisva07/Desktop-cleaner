@@ -2,7 +2,7 @@ import os
 import re
 import shutil
 import time
-
+import pickle
 
 
 class DesktopInterface:
@@ -48,16 +48,18 @@ class DesktopInterface:
             print()
         return di
 
-    def classify(self, ext, _dir):
-        dst = os.path.join(self.desktop, _dir)
+    def classify(self, ext, _dir,root = None):
+        if root == None:root = self.desktop
+        dst = os.path.join(root, _dir)
         try:
-            os.mkdir(dst)
+            os.makedirs(dst)
             print("New directory created..")
             time.sleep(2)
         except FileExistsError:
             print("Directory already exists .... Moving there ")
             time.sleep(2)
             pass
+            
         for file in self.files:
             if file.endswith("." + ext):
                 src = os.path.join(self.desktop, file)
@@ -70,6 +72,16 @@ class DesktopInterface:
                 time.sleep(1.5)
         self.initialize_files()
 
+    def auto_classify(self,root):
+        fp = open("File_formats.bin","rb")
+        file_formats = pickle.load(fp)
+        fp.close()
+        print("Warning!!! All types of files will be moved to respective folders under",root)
+        if input("Press 'y' to proceed") == "y":
+            for ext in file_formats:
+                self.classify(ext,file_formats[ext],root)
+        print("All files classified")
+
     def delete_dir(self, _dir):
         shutil.rmtree(os.path.join(self.desktop, _dir))
         print("The directory {} has been deleted successfully ...".format(_dir))
@@ -78,8 +90,9 @@ def displayMenu():
     menu = '''
     1.Show files by extension
     2.Show directories
-    3.Organize files
+    3.Organize files automatically
     4.Delete a directory
+    5.Organize files manually
     '''
     print(menu)
     return int(input("Enter your choice (0 to exit application)"))
@@ -95,9 +108,11 @@ while True:
     elif ch == 2:
         interface.show_directories()
     elif ch == 3:
-        interface.classify(input("Enter extension : "),input("Enter directory name : "))
+        interface.auto_classify(input("Enter path to root directory : "))
     elif ch == 4:
         interface.delete_dir("Enter directory name to delete : ")
+    elif ch == 5:
+        interface.classify(input("Enter extension : "),input("Enter directory name : "))
     else:
         print("Invalid choice ")
 
